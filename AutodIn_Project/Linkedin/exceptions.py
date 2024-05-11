@@ -1,0 +1,2 @@
+class PostAlreadyPublishedError(Exception):
+    pass

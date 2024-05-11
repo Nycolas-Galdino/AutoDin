@@ -1,0 +1,6 @@
+# Ignore cache files
+*.pyc
+*/__pycache__
+
+# Ignore personal keys
+*.env
