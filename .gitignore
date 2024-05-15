@@ -1,6 +1,13 @@
 # Ignore cache files
 *.pyc
 */__pycache__
+*.python
 
-# Ignore personal keys
+# Ignore personal type doc
 *.env
+*.png
+*.txt
+*.pdf
+
+# Ignore virtual-env
+.venv
