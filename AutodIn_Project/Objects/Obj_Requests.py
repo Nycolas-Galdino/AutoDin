@@ -5,10 +5,10 @@ import requests as re
 def verify_status_code(func) -> dict | list:
     def inner(*args, **kwargs):
         response: re.Response = func(*args, **kwargs)
-        if response.status_code not in [200, 201]:
+        if response.status_code <= 200 or response.status_code >= 300:
             raise ConnectionRefusedError(response.status_code,
                                          response.text)
-        return response.json()
+        return response.json() if response.content else response
     return inner
 
 
