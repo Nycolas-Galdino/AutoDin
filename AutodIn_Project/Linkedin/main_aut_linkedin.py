@@ -12,7 +12,8 @@ def create_post():
      EXPIRES_IN) = get_credentials()
 
     # text = input("Enter the text: ")
-    text = "Meu teste com imagem"
+    text = open("AutodIn_Project/Linkedin/test_text.txt", "r",
+                encoding="utf-8").read()
 
     choise = input("Do you want to post an image? (y/n): ")
     if choise == 'y':
@@ -28,10 +29,13 @@ def create_post():
                              text=text,
                              visibility="PUBLIC")
 
+    print('POST REALIZADO COM SUCESSO!')
+
 
 def run():
     try:
         create_post()
     except Exception as e:
+        print(e, e.errno)
         if e.errno == 422:
             raise PostAlreadyPublishedError from e
