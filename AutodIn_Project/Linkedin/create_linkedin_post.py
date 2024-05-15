@@ -3,12 +3,15 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Objects.Obj_Requests import Request
+from Objects.Obj_TextConverter import TextConverter
 
 
 def create_linkedin_post(bearer_token: str,
                          user_id: str,
                          text: str,
                          visibility: str = "PUBLIC"):
+    obj_convert = TextConverter()
+    text = obj_convert.convert_text(text)
     url = "https://api.linkedin.com/v2/ugcPosts"
 
     headers = {
@@ -42,7 +45,9 @@ def create_linkedin_post_with_image(bearer_token: str,
                                     image_filepath: str,
                                     visibility: str = "PUBLIC",
                                     **kwargs):
-
+    obj_convert = TextConverter()
+    text = obj_convert.convert_text(text)
+    image_filepath = image_filepath.replace("\\", "/")
     image_id = _upload_image(bearer_token, user_id, image_filepath)
 
     url = "https://api.linkedin.com/v2/ugcPosts"
@@ -77,10 +82,11 @@ def create_linkedin_post_with_image(bearer_token: str,
         }
     }
 
-    Request.post(url, headers=headers, data=data)
+    res = Request.post(url, headers=headers, data=data)
+    print('Post:', res)
 
 
-def _create_image_id(bearer_token: str, user_id: str, image_filepath: str) -> tuple:
+def _create_image_id(bearer_token: str, user_id: str) -> tuple:
     url = 'https://api.linkedin.com/v2/assets?action=registerUpload'
 
     headers = {
@@ -111,7 +117,7 @@ def _create_image_id(bearer_token: str, user_id: str, image_filepath: str) -> tu
 
 
 def _upload_image(bearer_token: str, user_id: str, image_filepath: str) -> str:
-    upload_url, asset = _create_image_id(bearer_token, user_id, image_filepath)
+    upload_url, asset = _create_image_id(bearer_token, user_id)
 
     headers = {"Authorization": f"Bearer {bearer_token}"}
     Request.post(upload_url, headers=headers, data=open(image_filepath, 'rb'))
