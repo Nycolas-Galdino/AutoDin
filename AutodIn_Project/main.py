@@ -2,7 +2,14 @@ import os
 try:
     from Linkedin import main_aut_linkedin
 except ModuleNotFoundError as mnfe:
-    os.system(f'pip install --use-pep517 {mnfe.name}')
+    if mnfe.name == 'dotenv':
+        os.system('pip install python-dotenv')
+
+    if mnfe.name == 'PIL':
+        os.system('pip install pillow fonttools')
+
+    else:
+        os.system(f'pip install {mnfe.name}')
     os.system(f'python "{__file__}"')
     quit()
 
